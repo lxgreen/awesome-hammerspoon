@@ -36,17 +36,17 @@ hs.loadSpoon("ModalMgr")
 -- Define default Spoons which will be loaded later
 if not hspoon_list then
     hspoon_list = {
-        "AClock",
-        "BingDaily",
-        "CircleClock",
-        "ClipShow",
-        "CountDown",
-        "HCalendar",
-        "HSaria2",
-        "HSearch",
-        "SpeedMenu",
+        -- "AClock",
+        -- "BingDaily",
+        -- "CircleClock",
+        -- "ClipShow",
+        -- "CountDown",
+        -- "HCalendar",
+        -- "HSaria2",
+        -- "HSearch",
+        -- "SpeedMenu",
         "WinWin",
-        "FnMate",
+        "FnMate"
     }
 end
 
@@ -76,9 +76,10 @@ cmodal:bind('', 'Q', 'Deactivate appM', function() spoon.ModalMgr:deactivate({"a
 cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
 if not hsapp_list then
     hsapp_list = {
-        {key = 'f', name = 'Finder'},
-        {key = 's', name = 'Safari'},
-        {key = 't', name = 'Terminal'},
+        {key = 'f', name = 'Firefox Developer Edition'},
+        {key = 'a', name = 'Alacritty'},
+        {key = 't', name = 'Telegram'},
+        {key = 's', name = 'Slack'},
         {key = 'v', id = 'com.apple.ActivityMonitor'},
         {key = 'y', id = 'com.apple.systempreferences'},
     }
@@ -262,6 +263,15 @@ if string.len(hslock_keys[2]) > 0 then
 end
 
 ----------------------------------------------------------------------------------------------------
+-- Move across screens
+function moveWindowToScreen(d)
+  return function()
+    local displays = hs.screen.allScreens()
+    local win = hs.window.focusedWindow()
+    win:moveToScreen(displays[d], true, false, 0)
+  end
+end
+----------------------------------------------------------------------------------------------------
 -- resizeM modal environment
 if spoon.WinWin then
     spoon.ModalMgr:new("resizeM")
@@ -289,11 +299,11 @@ if spoon.WinWin then
     cmodal:bind('shift', 'L', 'Move Rightward', function() spoon.WinWin:stepResize("right") end, nil, function() spoon.WinWin:stepResize("right") end)
     cmodal:bind('shift', 'K', 'Move Upward', function() spoon.WinWin:stepResize("up") end, nil, function() spoon.WinWin:stepResize("up") end)
     cmodal:bind('shift', 'J', 'Move Downward', function() spoon.WinWin:stepResize("down") end, nil, function() spoon.WinWin:stepResize("down") end)
-    cmodal:bind('', 'left', 'Move to Left Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("left") end)
-    cmodal:bind('', 'right', 'Move to Right Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("right") end)
-    cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("up") end)
-    cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("down") end)
-    cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("next") end)
+    cmodal:bind('', 'left', 'Move to Left Monitor', moveWindowToScreen(1))
+    cmodal:bind('', 'right', 'Move to Right Monitor', moveWindowToScreen(2))
+    -- cmodal:bind('', 'up', 'Move to Above Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("up") end)
+    -- cmodal:bind('', 'down', 'Move to Below Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("down") end)
+    -- cmodal:bind('', 'space', 'Move to Next Monitor', function() spoon.WinWin:stash() spoon.WinWin:moveToScreen("next") end)
     cmodal:bind('', '[', 'Undo Window Manipulation', function() spoon.WinWin:undo() end)
     cmodal:bind('', ']', 'Redo Window Manipulation', function() spoon.WinWin:redo() end)
     cmodal:bind('', '`', 'Center Cursor', function() spoon.WinWin:centerCursor() end)
